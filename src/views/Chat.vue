@@ -1,19 +1,12 @@
 <template>
-  <div class="home">
-    <div class='choose'>
-      <MD
-      class='md'
-      v-for="(s, index) in getPeople"
-      @click.native='chooseMe(s)'
-      :key='index'
-      :people='s'>
-      </MD>
-    </div>
+  <div class="chat">
+    NOT READY
   </div>
 </template>
 
 <script>
 // @ is an alias to /src
+import store from '@/store'
 import {
   MD
 } from '../components'
@@ -25,36 +18,39 @@ export default {
   },
   computed: {
     ...mapGetters('people', [
-      'getPeople'
+      'getPeople',
+      'getMe'
     ])
   },
   methods: {
     chooseMe (p) {
       console.log('choose', p)
-      this.fetchUserPosition()
       this.updateMe(p)
     },
     ...mapActions('people', [
       'updateMe'
-    ]),
-    ...mapActions('map', [
-      'fetchUserPosition'
     ])
-  }
+  },
+  beforeRouteEnter (to, from, next) {
+    if (store.getters['people/getMe'].name === '') {
+      next('/')
+      return
+    }
+    next()
+  },
 }
 </script>
 
 <style lang='scss' scoped>
-.choose {
+.chat {
   height: 90%;
   width: 100%;
   display: flex;
   flex-direction: column;
   justify-content: space-evenly;
   margin-bottom: 200px;
-  .md {
-    transform: scale(1.5)
-  }
+  color: red;
+  font-size: 30px;
 }
 
 </style>
