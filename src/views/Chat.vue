@@ -7,15 +7,9 @@
 <script>
 // @ is an alias to /src
 import store from '@/store'
-import {
-  MD
-} from '../components'
 import { mapGetters, mapActions} from 'vuex'
 export default {
   name: 'home',
-  components: {
-    MD
-  },
   computed: {
     ...mapGetters('people', [
       'getPeople',

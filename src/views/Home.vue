@@ -33,6 +33,9 @@ export default {
       console.log('choose', p)
       this.fetchUserPosition()
       this.updateMe(p)
+      setTimeout(() => {
+        this.$router.push('/map')
+      }, 250)
     },
     ...mapActions('people', [
       'updateMe'

@@ -10,11 +10,11 @@
 
 <script>
 import { mapActions, mapGetters } from 'vuex'
+import { db } from "./main" // <--- or wherever the config file is
 
 import {
   Footer
 } from '@/components'
-
 export default {
   components: {
     Footer
@@ -27,6 +27,14 @@ export default {
     console.log('app created')
   },
   mounted () {
+    setTimeout(() => {
+      db.collection("users")
+      .onSnapshot(() => {
+        console.log('snapshot!')
+        this.fetchList()
+      })
+      this.fetchList()
+    }, 1000)
   },
   updated () {
   },
@@ -36,7 +44,8 @@ export default {
     ])
   },
   methods: {
-    ...mapActions([
+    ...mapActions('people', [
+      'fetchList'
     ])
   },
   watch: {
