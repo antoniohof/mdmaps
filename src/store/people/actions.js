@@ -1,8 +1,9 @@
 // import Vue from 'vue'
-import { db } from "../../main" // <--- or wherever the config file is
+import { db } from "@/main.js" // <--- or wherever the config file is
 const actions = {
   fetchList: ({ commit, getters }) =>  {
     return db.collection('users').get().then((users) => {
+      console.log('GOT USERS!', users)
       var data = users.docs.map(doc => {
         return {
           location: {
@@ -13,7 +14,7 @@ const actions = {
           name: doc.id
         }
       })
-      console.log(data)
+      console.log('people', data)
       commit('storeList', data)
       return data
     })

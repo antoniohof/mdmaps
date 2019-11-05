@@ -34,20 +34,29 @@ var firebaseConfig = {
 // Initialize Firebase
 firebase.initializeApp(firebaseConfig)
 
-const messaging = firebase.messaging()
-
 export const db = firebase.firestore()
 
-messaging.usePublicVapidKey('BM4yc3WoicKO14-2-1ov1Fq3sxYpn8KLfH-v98MDhvH3L80NlrmeGrFjNkwQUtp0gWL1ERh2SFBPXWXalGxdrNg') // 1. Generate a new key pair
+console.log('db', db)
+db.collection("users").onSnapshot(() => {
+  console.warn('snapshotFIRST!')
+  store.dispatch('people/fetchList','', {root: true})
+})
 
-// Request Permission of Notifications
-messaging.requestPermission().then(() => {
-  console.log('Notification permission granted.')
+if (firebase.messaging.isSupported()) {
+  console.warn('messaging supported!')
+  const messaging = firebase.messaging()
+  messaging.usePublicVapidKey('BM4yc3WoicKO14-2-1ov1Fq3sxYpn8KLfH-v98MDhvH3L80NlrmeGrFjNkwQUtp0gWL1ERh2SFBPXWXalGxdrNg') // 1. Generate a new key pair
+  // Request Permission of Notifications
+  messaging.requestPermission().then(() => {
+    console.log('Notification permission granted.')
 
-  // Get Token
-  messaging.getToken().then((token) => {
-    console.log(token)
-  })
-}).catch((err) => {
-  console.log('Unable to get permission to notify.', err)
-});
+    // Get Token
+    messaging.getToken().then((token) => {
+      console.log(token)
+    })
+  }).catch((err) => {
+    console.log('Unable to get permission to notify.', err)
+  });
+} else {
+  console.error('messaging not supported!')
+}

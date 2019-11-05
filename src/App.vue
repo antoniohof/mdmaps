@@ -10,7 +10,7 @@
 
 <script>
 import { mapActions, mapGetters } from 'vuex'
-import { db } from "./main" // <--- or wherever the config file is
+import { db } from "@/main.js" // <--- or wherever the config file is
 
 import {
   Footer
@@ -28,13 +28,10 @@ export default {
   },
   mounted () {
     setTimeout(() => {
-      db.collection("users")
-      .onSnapshot(() => {
-        console.log('snapshot!')
+      if (db) {
         this.fetchList()
-      })
-      this.fetchList()
-    }, 1000)
+      }
+    }, 1500)
   },
   updated () {
   },
