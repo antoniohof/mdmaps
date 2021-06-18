@@ -1,7 +1,4 @@
-# mdmaps
-
-Simple Vue SPA firebase/firestorm app with location services and push notification.
-See where your friends when they open the SPA
+# embodied beats
 
 ## Project setup
 ```
@@ -27,6 +24,3 @@ yarn run test
 ```
 yarn run lint
 ```
-
-### Customize configuration
-See [Configuration Reference](https://cli.vuejs.org/config/).

@@ -3,49 +3,40 @@ import App from './App.vue'
 import router from './router'
 import store from './store/index'
 import './registerServiceWorker'
-import * as VueGoogleMaps from 'vue2-google-maps'
 import firebase from 'firebase'
+import vuetify from './plugins/vuetify';
 Vue.config.productionTip = false
-
-Vue.use(VueGoogleMaps, {
-  load: {
-    key: 'AIzaSyDqBGByZGBsCtHHDjCQD6fRywO70F9ph9o',
-    libraries: 'places'
-  }
-})
 
 new Vue({
   router,
   store,
+  vuetify,
   render: h => h(App)
 }).$mount('#app')
 
 
 // Your web app's Firebase configuration
 var firebaseConfig = {
-  apiKey: "AIzaSyBleBVJ1b6bkFOqaomurNk_oADwy0r0ajg",
-  authDomain: "mdmaps-95fcb.firebaseapp.com",
-  databaseURL: "https://mdmaps-95fcb.firebaseio.com",
-  projectId: "mdmaps-95fcb",
-  storageBucket: "",
-  messagingSenderId: "561644733683",
-  appId: "1:561644733683:web:61a94c98e63f73c855e386"
+  apiKey: process.env.VUE_APP_FIREBASE_APIKEY,
+  authDomain: process.env.VUE_APP_FIREBASE_AUTHDOMAIN,
+  projectId: process.env.VUE_APP_FIREBASE_PROJECTID,
+  storageBucket: process.env.VUE_APP_FIREBASE_STORAGEBUCKET,
+  messagingSenderId: process.env.VUE_APP_FIREBASE_SENDERID,
+  appId: process.env.VUE_APP_FIREBASE_APPID
 };
 // Initialize Firebase
 firebase.initializeApp(firebaseConfig)
 
+// database
 export const db = firebase.firestore()
 
-console.log('db', db)
-db.collection("users").onSnapshot(() => {
-  console.warn('snapshotFIRST!')
-  store.dispatch('people/fetchList','', {root: true})
-})
+// storage
+export const storage = firebase.storage().ref();
 
 if (firebase.messaging.isSupported()) {
   console.warn('messaging supported!')
   const messaging = firebase.messaging()
-  messaging.usePublicVapidKey('BM4yc3WoicKO14-2-1ov1Fq3sxYpn8KLfH-v98MDhvH3L80NlrmeGrFjNkwQUtp0gWL1ERh2SFBPXWXalGxdrNg') // 1. Generate a new key pair
+  messaging.usePublicVapidKey(process.env.VUE_APP_FIREBASE_MESSAGING) // 1. Generate a new key pair
   // Request Permission of Notifications
   messaging.requestPermission().then(() => {
     console.log('Notification permission granted.')

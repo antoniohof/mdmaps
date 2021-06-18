@@ -1,63 +1,53 @@
 <template>
   <div class="home">
-    <div class='choose'>
-      <MD
-      class='md'
-      v-for="(s, index) in getPeople"
-      @click.native='chooseMe(s)'
-      :key='index'
-      :people='s'>
-      </MD>
+    <div id="info"></div>
+    <div id="predictions"></div>
+    <div id="canvas-wrapper">
+      <canvas id="output" style=""></canvas>
+      <video id="video" playsinline style="
+      -webkit-transform: scaleX(-1);
+      transform: scaleX(-1);
+      visibility: hidden;
+      width: auto;
+      height: auto;
+      position: absolute;
+      ">
+      </video>
     </div>
+    <div id="scatter-gl-container"></div>
   </div>
 </template>
 
 <script>
-// @ is an alias to /src
-import {
-  MD
-} from '../components'
-import { mapGetters, mapActions} from 'vuex'
+import { start } from '@/assets/js/handpose/index.js'
 export default {
   name: 'home',
   components: {
-    MD
   },
   computed: {
-    ...mapGetters('people', [
-      'getPeople'
-    ])
+  },
+  data () {
+    return {
+    }
+  },
+  mounted () {
+    setTimeout(() => {
+      console.log('go start')
+      start()
+    }, 1000)
+  },
+  destroyed () {
+
   },
   methods: {
-    chooseMe (p) {
-      console.log('choose', p)
-      this.fetchUserPosition()
-      this.updateMe(p)
-      setTimeout(() => {
-        this.$router.push('/map')
-      }, 250)
-    },
-    ...mapActions('people', [
-      'updateMe'
-    ]),
-    ...mapActions('map', [
-      'fetchUserPosition'
-    ])
+
   }
 }
 </script>
 
-<style lang='scss' scoped>
-.choose {
-  height: 90%;
-  width: 100%;
-  display: flex;
-  flex-direction: column;
-  justify-content: space-evenly;
-  margin-bottom: 200px;
-  .md {
-    transform: scale(1.5)
-  }
-}
+<style lang='sass' scoped>
+.home
+  width: 100vw
+  height: 100vh
 
 </style>

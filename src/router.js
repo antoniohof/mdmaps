@@ -1,27 +1,35 @@
 import Vue from 'vue'
 import Router from 'vue-router'
 import Home from './views/Home.vue'
-import Maps from './views/Maps.vue'
-import Chat from './views/Chat.vue'
 
 Vue.use(Router)
 
-export default new Router({
+const router = new Router({
+  mode: 'history',
   routes: [
     {
       path: '/',
-      name: 'home',
-      component: Home
-    },
-    {
-      path: '/chat',
-      name: 'chat',
-      component: Chat
-    },
-    {
-      path: '/map',
-      name: 'map',
-      component: Maps
+      name: 'HOME',
+      component: Home,
+      meta: {
+        auth: false,
+        top: {
+          show: true
+        }
+      }
     }
   ]
 })
+/*
+router.beforeEach((to, from, next) => {
+  const requiresAuth = to.matched.some(record => record.meta.auth)
+  const isAuthenticated = store.getters['auth/isAuthenticated']
+  if (requiresAuth && !isAuthenticated) {
+    next('/')
+  } else {
+    next()
+  }
+})
+*/
+
+export default router
